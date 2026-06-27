@@ -1,5 +1,4 @@
 // Branch created and file with 0-1 knapsack algorithm added
-// Note: Need to fix VLA (variable-length array) — VLAs are non-standard in C++ and can cause stack overflow. Consider using std::vector or a 1D DP optimization.
 
 #include <algorithm>
 #include <initializer_list>
@@ -34,7 +33,7 @@ int main() {
 
 unsigned int Knapsack_problem::solve_knapsack_dp(const Items& items, unsigned int max_weight) {
     unsigned int count_elems = items.weights_of_items.size();
-    unsigned int dynamic_knapsack[count_elems + 1][max_weight + 1];
+    std::vector<std::vector<unsigned int>> dynamic_knapsack(count_elems + 1, std::vector<unsigned int>(max_weight + 1));
 
     for (unsigned int weight = 0; weight <= max_weight; weight++) {
         dynamic_knapsack[0][weight] = 0;
