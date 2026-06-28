@@ -19,6 +19,7 @@ namespace Knapsack_problem {
     };
 
     unsigned int solve_knapsack_dp(const Items& items, unsigned int max_weight);
+    unsigned int solve_knapsack_less_memory(const Items& items, unsigned int max_weight);
 }
 
 int main() {
@@ -27,6 +28,8 @@ int main() {
 
     std::cout << Knapsack_problem::solve_knapsack_dp(concrete_items, 6) << std::endl;
     std::cout << Knapsack_problem::solve_knapsack_dp(concrete_items1, 14) << std::endl;
+    std::cout << Knapsack_problem::solve_knapsack_less_memory(concrete_items, 6) << std::endl;
+    std::cout << Knapsack_problem::solve_knapsack_less_memory(concrete_items1, 14) << std::endl;
 
     return 0;
 }
@@ -54,4 +57,20 @@ unsigned int Knapsack_problem::solve_knapsack_dp(const Items& items, unsigned in
     }
 
     return dynamic_knapsack[count_elems][max_weight];
+}
+
+unsigned int Knapsack_problem::solve_knapsack_less_memory(const Items& items, unsigned int max_weight) {
+    unsigned int count_of_items = items.weights_of_items.size();
+    std::vector<unsigned int> dynamic_knapsack(max_weight + 1, 0);
+
+    for (unsigned int item = 0; item < count_of_items; item++) {
+        unsigned int current_weight = items.weights_of_items.at(item);
+        unsigned int current_value = items.values_of_items.at(item);
+
+        for (unsigned int weight = max_weight; weight >= current_weight; weight--) {
+            dynamic_knapsack[weight] = std::max(dynamic_knapsack[weight], dynamic_knapsack[weight - current_weight] + current_value);
+        }
+    }
+
+    return dynamic_knapsack[max_weight];
 }
